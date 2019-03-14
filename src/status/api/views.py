@@ -6,7 +6,7 @@ from .serializers import StatusSerializers
 
 class StatusApiView(mixins.CreateModelMixin, generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    authentication_classes = [SessionAuthentication]
+    # authentication_classes = [SessionAuthentication]
 
     serializer_class = StatusSerializers
 

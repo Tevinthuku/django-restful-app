@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from rest_framework_jwt.views import (obtain_jwt_token, refresh_jwt_token)
+
 from django.contrib import admin
 # from updates.views import (update_model_detail_view,
 #                            JsonCBV,
@@ -24,10 +26,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/updates/', include('updates.api.urls')),
-    url(r'^api/status/', include('status.api.urls'))
-    # url(r'^json/example/', JsonCBV.as_view()),
-    # url(r'^json/example2/', JsonCBV2.as_view()),
-    # url(r'^json/list/', SerializedListView.as_view()),
-    # url(r'^json/details/', SerializedDetailView.as_view()),
-    # url(r'^$', update_model_detail_view)
+    url(r'^api/status/', include('status.api.urls')),
+    url(r'^api/auth/', include("accounts.api.urls")),
+    url(r'^api/auth/jwt/refresh/$', refresh_jwt_token)
 ]
