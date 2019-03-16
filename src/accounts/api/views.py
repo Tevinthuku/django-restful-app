@@ -8,6 +8,9 @@ from django.contrib.auth import (authenticate, get_user_model)
 from .serializers import UserRegistrationSerializer
 from .permissions import AnonPermissionOnly
 
+from status.models import Status
+from status.api.serializers import StatusSerializers
+
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
@@ -48,3 +51,14 @@ class RegisterAPIView(generics.CreateAPIView):
 
     def get_serializer_context(self, *args, **kwargs):
         return {"request": self.request}
+
+
+class UserListStatusView(generics.ListAPIView):
+    serializer_class = StatusSerializers
+
+    def get_queryset(self, *args, **kwargs):
+        userid = self.kwargs.get("userid", None)
+        if userid is None:
+            return Status.objects.none()
+
+        return Status.objects.filter(user=userid)
