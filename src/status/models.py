@@ -4,7 +4,7 @@
 
 from django.db import models
 from django.conf import settings
-
+import json
 # Create your models here.
 
 
@@ -13,7 +13,9 @@ def upload_status_image(instance, filename):
 
 
 class StatusQuerySet(models.QuerySet):
-    pass
+    def serialize(self):
+        # return serialize("json", self, fields=("user", "content", "image"))
+        return (list(self.values("user", "content", "image", "id")))
 
 
 class StatusManager(models.Manager):

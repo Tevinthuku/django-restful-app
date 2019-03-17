@@ -5,7 +5,8 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework import generics, permissions
 from django.contrib.auth import (authenticate, get_user_model)
 
-from .serializers import UserRegistrationSerializer
+from .serializers import (UserRegistrationSerializer,
+                          UsersListWithStatusSerializer)
 from .permissions import AnonPermissionOnly
 
 from status.models import Status
@@ -62,3 +63,11 @@ class UserListStatusView(generics.ListAPIView):
             return Status.objects.none()
 
         return Status.objects.filter(user=userid)
+
+
+class UsersListView(generics.ListAPIView):
+    permission_classes = [AnonPermissionOnly]
+    serializer_class = UsersListWithStatusSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        return User.objects.all()
